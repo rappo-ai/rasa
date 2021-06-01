@@ -17,7 +17,6 @@ from rasa.shared.core.domain import Domain
 from rasa.shared.nlu.constants import INTENT_NAME_KEY
 from rasa.shared.nlu.training_data.message import Message
 from rasa.shared.constants import (
-    INTENT_MESSAGE_PREFIX,
     DOCS_URL_DOMAINS,
     LEGACY_DOCS_BASE_URL,
     DOCS_URL_STORIES,
@@ -31,6 +30,7 @@ from rasa.shared.core.training_data.story_reader.story_reader import (
 )
 from rasa.shared.core.training_data.structures import StoryStep, FORM_PREFIX
 import rasa.shared.utils.io
+from rasa.utils.common import is_shortcut_intent
 
 logger = logging.getLogger(__name__)
 
@@ -269,10 +269,9 @@ class MarkdownStoryReader(StoryReader):
             example.data[rasa.shared.nlu.constants.TEXT] = message
             example.data[rasa.shared.nlu.constants.ENTITIES] = []
 
-        # If the message starts with the `INTENT_MESSAGE_PREFIX` potential entities
+        # If the message is a short-cut intent, potential entities
         # are annotated in the json format (e.g. `/greet{"name": "Rasa"})
-        # tbdintentprefix/?/e2e
-        if message.startswith(INTENT_MESSAGE_PREFIX):
+        if is_shortcut_intent(message):
             parsed = RegexInterpreter().synchronous_parse(message)
             example.data["entities"] = parsed["entities"]
 
@@ -296,7 +295,6 @@ class MarkdownStoryReader(StoryReader):
                 "entities": entities,
             }
         else:
-            # tbdintentprefix/?/markdown
             parse_data = RegexInterpreter().synchronous_parse(message)
             text = None
             intent = parse_data.get("intent")

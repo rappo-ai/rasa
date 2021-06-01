@@ -18,7 +18,12 @@ from typing import (
 
 import rasa.utils.io
 from rasa.constants import DEFAULT_LOG_LEVEL_LIBRARIES, ENV_LOG_LEVEL_LIBRARIES
-from rasa.shared.constants import DEFAULT_LOG_LEVEL, ENV_LOG_LEVEL
+from rasa.shared.constants import (
+    DEFAULT_LOG_LEVEL,
+    ENV_LOG_LEVEL,
+    INTENT_MESSAGE_PREFIX,
+    INTENT_MESSAGE_ESCAPE_PREFIX,
+)
 import rasa.shared.utils.io
 
 logger = logging.getLogger(__name__)
@@ -322,3 +327,9 @@ async def call_potential_coroutine(
         return await coroutine_or_return_value
 
     return coroutine_or_return_value
+
+
+def is_shortcut_intent(text: Text):
+    return text.startswith(INTENT_MESSAGE_PREFIX) and not text.startswith(
+        INTENT_MESSAGE_ESCAPE_PREFIX
+    )

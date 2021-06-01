@@ -4,9 +4,9 @@ from typing import Optional, Text
 
 from rasa.shared.utils.cli import print_info, print_success
 from rasa.shared.nlu.interpreter import RegexInterpreter
-from rasa.shared.constants import INTENT_MESSAGE_PREFIX
 from rasa.nlu.model import Interpreter
 from rasa.shared.utils.io import json_to_string
+from rasa.utils.common import is_shortcut_intent
 import rasa.utils.common
 
 if typing.TYPE_CHECKING:
@@ -30,8 +30,7 @@ def run_cmdline(
             print_info("Wrapping up command line chat...")
             break
 
-        # tbdintentprefix/nlu/cmdline
-        if message.startswith(INTENT_MESSAGE_PREFIX):
+        if is_shortcut_intent(message):
             result = rasa.utils.common.run_in_loop(regex_interpreter.parse(message))
         else:
             result = interpreter.parse(message)
