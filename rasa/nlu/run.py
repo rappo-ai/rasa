@@ -30,6 +30,7 @@ def run_cmdline(
             print_info("Wrapping up command line chat...")
             break
 
+        # tbdintentprefix/nlu/cmdline
         if message.startswith(INTENT_MESSAGE_PREFIX):
             result = rasa.utils.common.run_in_loop(regex_interpreter.parse(message))
         else:

@@ -90,6 +90,7 @@ class TrainingDataWriter:
         # in end-to-end stories) then potential entities were provided in the json
         # format (e.g. `/greet{"name": "Rasa"}) and we don't have to add the NLU
         # entity annotation
+        # tbdintentprefix/?/readerwriter
         if not text.startswith(INTENT_MESSAGE_PREFIX):
 
             entities = message.get("entities", [])

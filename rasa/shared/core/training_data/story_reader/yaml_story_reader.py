@@ -423,6 +423,7 @@ class YAMLStoryReader(StoryReader):
             entities = entities_parser.find_entities_in_training_example(user_message)
             plain_text = entities_parser.replace_entities(user_message)
 
+            # tbdintentprefix/?/e2e
             if plain_text.startswith(INTENT_MESSAGE_PREFIX):
                 entities = (
                     RegexInterpreter().synchronous_parse(plain_text).get(ENTITIES, [])

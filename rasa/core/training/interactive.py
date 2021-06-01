@@ -846,7 +846,7 @@ def _write_stories_to_file(
 
 def _filter_messages(msgs: List[Message]) -> List[Message]:
     """Filter messages removing those that start with INTENT_MESSAGE_PREFIX"""
-
+    # tbdintentprefix/interactive
     filtered_messages = []
     for msg in msgs:
         if not msg.get(TEXT).startswith(INTENT_MESSAGE_PREFIX):
@@ -1173,6 +1173,7 @@ def _as_md_message(parse_data: Dict[Text, Any]) -> Text:
     """Display the parse data of a message in markdown format."""
     from rasa.shared.nlu.training_data.formats.readerwriter import TrainingDataWriter
 
+    # tbdintentprefix/interactive
     if parse_data.get("text", "").startswith(INTENT_MESSAGE_PREFIX):
         return parse_data["text"]
 
@@ -1242,6 +1243,7 @@ async def _validate_nlu(
 
     latest_message = latest_user_message(tracker.get("events", [])) or {}
 
+    # tbdintentprefix/interactive
     if latest_message.get("text", "").startswith(INTENT_MESSAGE_PREFIX):
         valid = _validate_user_regex(latest_message, intents)
     else:
@@ -1321,6 +1323,7 @@ async def _enter_user_message(conversation_id: Text, endpoint: EndpointConfig) -
 
     message = await _ask_questions(question, conversation_id, endpoint, lambda a: not a)
 
+    # tbdintentprefix/interactive
     if message == (INTENT_MESSAGE_PREFIX + USER_INTENT_RESTART):
         raise RestartConversation()
 

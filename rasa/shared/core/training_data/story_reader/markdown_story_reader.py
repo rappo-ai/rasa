@@ -271,6 +271,7 @@ class MarkdownStoryReader(StoryReader):
 
         # If the message starts with the `INTENT_MESSAGE_PREFIX` potential entities
         # are annotated in the json format (e.g. `/greet{"name": "Rasa"})
+        # tbdintentprefix/?/e2e
         if message.startswith(INTENT_MESSAGE_PREFIX):
             parsed = RegexInterpreter().synchronous_parse(message)
             example.data["entities"] = parsed["entities"]
@@ -295,6 +296,7 @@ class MarkdownStoryReader(StoryReader):
                 "entities": entities,
             }
         else:
+            # tbdintentprefix/?/markdown
             parse_data = RegexInterpreter().synchronous_parse(message)
             text = None
             intent = parse_data.get("intent")

@@ -234,6 +234,7 @@ class TelegramInput(InputChannel):
                 sender_id = msg.chat.id
                 metadata = self.get_metadata(request)
                 try:
+                    # tbdintentprefix/?/telegram
                     if text == (INTENT_MESSAGE_PREFIX + USER_INTENT_RESTART):
                         await on_new_message(
                             UserMessage(

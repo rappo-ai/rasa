@@ -142,6 +142,7 @@ class RegexInterpreter(NaturalLanguageInterpreter):
 
         intent, confidence, entities = self.extract_intent_and_entities(text)
 
+        # tbdintentprefix/?/regexinterpreter
         if self._starts_with_intent_prefix(text):
             message_text = text
         else:

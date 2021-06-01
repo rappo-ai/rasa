@@ -158,6 +158,7 @@ async def record_messages(
 ) -> int:
     """Read messages from the command line and print bot responses."""
 
+    # tbdintentprefix/run/cmdline
     exit_text = INTENT_MESSAGE_PREFIX + "stop"
 
     rasa.shared.utils.cli.print_success(
