@@ -185,10 +185,10 @@ class KeywordIntentClassifier(IntentClassifier):
 
     def _get_regex_for_match_condition(self, keyword_text: Text, match_condition: Text):
         match_condition_regex_map = {
-            "contain": r"\b" + keyword_text + r"\b",
-            "exact": r"^" + r"\b" + keyword_text + r"\b" + r"$",
-            "start": r"^" + r"\b" + keyword_text + r"\b",
-            "end": r"\b" + keyword_text + r"\b" + r"$",
+            "contain": r"\b" + re.escape(keyword_text) + r"\b",
+            "exact": r"^" + re.escape(keyword_text) + r"$",
+            "start": r"^" + re.escape(keyword_text),
+            "end": re.escape(keyword_text) + r"$",
         }
         return match_condition_regex_map.get(match_condition, None)
 
