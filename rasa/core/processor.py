@@ -563,10 +563,13 @@ class MessageProcessor:
 
         # for testing - you can short-cut the NLU part with a message
         # in the format /intent{"entity1": val1, "entity2": val2}
-        # parse_data is a dict of intent & entities
-        # tbdintentprefix/?/core/agent
-        # tbdintentprefix/?/core/test/e2e
-        if text.startswith(INTENT_MESSAGE_PREFIX):
+        # parse_data is a dict of intent & entities.
+        # Channels which need to support user messages starting
+        # with / can set disable_intent_shortcut to True to disable
+        # intent short-cuts.
+        if text.startswith(INTENT_MESSAGE_PREFIX) and not message.metadata.get(
+            "disable_intent_shortcut", False
+        ):
             parse_data = await RegexInterpreter().parse(
                 text, message.message_id, tracker
             )

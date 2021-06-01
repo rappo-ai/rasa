@@ -232,9 +232,8 @@ class TelegramInput(InputChannel):
                     else:
                         return response.text("success")
                 sender_id = msg.chat.id
-                metadata = self.get_metadata(request)
+                metadata = self.get_metadata(request) or {}
                 try:
-                    # tbdintentprefix/?/telegram
                     if text == (INTENT_MESSAGE_PREFIX + USER_INTENT_RESTART):
                         await on_new_message(
                             UserMessage(
@@ -255,6 +254,7 @@ class TelegramInput(InputChannel):
                             )
                         )
                     else:
+                        metadata["disable_intent_shortcut"] = True
                         await on_new_message(
                             UserMessage(
                                 text,
