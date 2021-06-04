@@ -281,3 +281,6 @@ class TelegramInput(InputChannel):
         channel.set_webhook(url=self.webhook_url)
 
         return channel
+
+    def get_metadata(self, request: Request) -> Dict[Text, Any]:
+        return request.json
