@@ -10,6 +10,7 @@ from telebot.types import (
     InlineKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardMarkup,
+    ReplyKeyboardRemove,
     Message,
 )
 from typing import Dict, Text, Any, List, Optional, Callable, Awaitable
@@ -36,12 +37,12 @@ class TelegramOutput(TeleBot, OutputChannel):
         self, recipient_id: Text, text: Text, **kwargs: Any
     ) -> None:
         for message_part in text.strip().split("\n\n"):
-            self.send_message(recipient_id, message_part)
+            self.send_message(recipient_id, message_part, reply_markup=ReplyKeyboardRemove())
 
     async def send_image_url(
         self, recipient_id: Text, image: Text, **kwargs: Any
     ) -> None:
-        self.send_photo(recipient_id, image)
+        self.send_photo(recipient_id, image, reply_markup=ReplyKeyboardRemove())
 
     async def send_text_with_buttons(
         self,
@@ -135,6 +136,8 @@ class TelegramOutput(TeleBot, OutputChannel):
         for params in send_functions.keys():
             if all(json_message.get(p) is not None for p in params):
                 args = [json_message.pop(p) for p in params]
+                if send_functions[params] not in ["send_media_group", "send_game", "send_chat_action", "send_invoice"]:
+                   json_message["reply_markup"] = ReplyKeyboardRemove()
                 api_call = getattr(self, send_functions[params])
                 api_call(recipient_id, *args, **json_message)
 
