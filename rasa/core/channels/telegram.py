@@ -171,19 +171,19 @@ class TelegramInput(InputChannel):
 
     @staticmethod
     def _is_location(message: Message) -> bool:
-        return message.location is not None
+        return message and (message.location is not None)
 
     @staticmethod
     def _is_user_message(message: Message) -> bool:
-        return message.text is not None
+        return message and (message.text is not None)
 
     @staticmethod
     def _is_edited_message(message: Update) -> bool:
-        return message.edited_message is not None
+        return message and (message.edited_message is not None)
 
     @staticmethod
     def _is_button(message: Update) -> bool:
-        return message.callback_query is not None
+        return message and (message.callback_query is not None)
 
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[Any]]
