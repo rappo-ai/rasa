@@ -158,6 +158,7 @@ class TelegramInput(InputChannel):
             credentials.get("access_token"),
             credentials.get("verify"),
             credentials.get("webhook_url"),
+            credentials.get("drop_pending_updates", 'true').lower() in ['true', '1', 't'],
         )
 
     def __init__(
@@ -165,11 +166,13 @@ class TelegramInput(InputChannel):
         access_token: Optional[Text],
         verify: Optional[Text],
         webhook_url: Optional[Text],
+        drop_pending_updates: Optional[bool] = True,
         debug_mode: bool = True,
     ) -> None:
         self.access_token = access_token
         self.verify = verify
         self.webhook_url = webhook_url
+        self.drop_pending_updates = drop_pending_updates
         self.debug_mode = debug_mode
 
     @staticmethod
@@ -281,7 +284,7 @@ class TelegramInput(InputChannel):
     def get_output_channel(self) -> TelegramOutput:
         """Loads the telegram channel."""
         channel = TelegramOutput(self.access_token)
-        channel.set_webhook(url=self.webhook_url)
+        channel.set_webhook(url=self.webhook_url, drop_pending_updates=self.drop_pending_updates)
 
         return channel
 
