@@ -36,6 +36,7 @@ from rasa.shared.core.constants import (
     ENTITY_LABEL_SEPARATOR,
     ACTION_SESSION_START_NAME,
     ACTION_LISTEN_NAME,
+    SESSION_START_METADATA_SLOT,
 )
 from rasa.shared.exceptions import UnsupportedFeatureException
 from rasa.shared.nlu.constants import (
@@ -976,6 +977,13 @@ class Restarted(AlwaysEqualEventMixin):
     def apply_to(self, tracker: "DialogueStateTracker") -> None:
         """Resets the tracker and triggers a followup `ActionSessionStart`."""
         tracker._reset()
+        
+        from rasa.shared.core.trackers import EventVerbosity
+        
+        last_user_event = tracker.get_last_event_for(event_type=UserUttered, event_verbosity=EventVerbosity.ALL)
+        if (last_user_event and last_user_event.metadata):
+            tracker._set_slot(SESSION_START_METADATA_SLOT, last_user_event.metadata)
+
         tracker.trigger_followup_action(ACTION_SESSION_START_NAME)
 
 
