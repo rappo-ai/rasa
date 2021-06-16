@@ -938,7 +938,7 @@ def create_app(
                     raise ErrorResponse(
                         HTTPStatus.NOT_FOUND,
                         "NotFound",
-                        f"The intent {trigger_intent} does not exist in the domain.",
+                        f"The intent {intent_to_trigger} does not exist in the domain.",
                     )
                 await app.agent.trigger_intent(
                     intent_name=intent_to_trigger,
