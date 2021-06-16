@@ -3,9 +3,7 @@ name: Publish Documentation
 on:
   push:
     branches:
-    - 'main'
-    tags:
-    - '**'
+    - 'telegram'
   workflow_dispatch:
 
 # SECRETS
