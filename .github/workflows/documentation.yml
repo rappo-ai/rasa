@@ -1,9 +1,6 @@
 name: Publish Documentation
 
 on:
-  push:
-    branches:
-    - 'telegram'
   workflow_dispatch:
 
 # SECRETS
