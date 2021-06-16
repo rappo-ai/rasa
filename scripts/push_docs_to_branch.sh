@@ -16,7 +16,7 @@ TODAY=`date "+%Y%m%d"`
 # we build new versions only for minors and majors
 PATTERN_FOR_NEW_VERSION="^refs/tags/[0-9]+\\.[0-9]+\\.0$"
 PATTERN_FOR_MICRO_VERSION="^refs/tags/[0-9]+\\.[0-9]+\\.[1-9][0-9]*$"
-MAIN_REF=refs/heads/main
+MAIN_REF=refs/heads/telegram
 VARIABLES_JSON=docs/docs/variables.json
 SOURCES_FILES=docs/docs/sources/
 REFERENCE_FILES=docs/docs/reference/
