@@ -33,6 +33,7 @@ DOCS_BASE_URL_RASA_X = "https://rasa.com/docs/rasa-x"
 DOCS_BASE_URL_ACTION_SERVER = "https://rasa.com/docs/action-server"
 
 INTENT_MESSAGE_PREFIX = "/"
+INTENT_MESSAGE_ESCAPE_PREFIX = "//"
 
 PACKAGE_NAME = "rasa"
 NEXT_MAJOR_VERSION_FOR_DEPRECATIONS = "3.0.0"

@@ -5,7 +5,6 @@ import operator
 from pathlib import Path
 
 import rasa.shared.nlu.training_data.util
-from rasa.shared.constants import INTENT_MESSAGE_PREFIX
 
 from rasa.shared.nlu.constants import (
     INTENT,
@@ -18,6 +17,8 @@ from rasa.shared.nlu.constants import (
 )
 
 import rasa.shared.utils.io
+from rasa.utils.common import is_shortcut_intent
+
 import typing
 from typing import Text, Dict, Any, Union
 
@@ -86,11 +87,10 @@ class TrainingDataWriter:
 
         pos = 0
 
-        # If a message was prefixed with `INTENT_MESSAGE_PREFIX` (this can only happen
-        # in end-to-end stories) then potential entities were provided in the json
-        # format (e.g. `/greet{"name": "Rasa"}) and we don't have to add the NLU
-        # entity annotation
-        if not text.startswith(INTENT_MESSAGE_PREFIX):
+        # If a message is a shortcut intent then potential entities were
+        # provided in the json format (e.g. `/greet{"name": "Rasa"}) and
+        # we don't have to add the NLU entity annotation
+        if not is_shortcut_intent(text):
 
             entities = message.get("entities", [])
             entities_with_start_and_end = [

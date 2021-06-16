@@ -31,6 +31,7 @@ from rasa.shared.core.events import UserUttered, SlotSet, ActiveLoop
 from rasa.shared.core.training_data.story_reader.story_reader import StoryReader
 from rasa.shared.core.training_data.structures import StoryStep
 from rasa.shared.nlu.training_data.message import Message
+from rasa.utils.common import is_shortcut_intent
 
 logger = logging.getLogger(__name__)
 
@@ -423,7 +424,7 @@ class YAMLStoryReader(StoryReader):
             entities = entities_parser.find_entities_in_training_example(user_message)
             plain_text = entities_parser.replace_entities(user_message)
 
-            if plain_text.startswith(INTENT_MESSAGE_PREFIX):
+            if is_shortcut_intent(plain_text):
                 entities = (
                     RegexInterpreter().synchronous_parse(plain_text).get(ENTITIES, [])
                 )

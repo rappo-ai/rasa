@@ -65,6 +65,7 @@ class FallbackClassifier(IntentClassifier):
         message.data[INTENT] = _fallback_intent(confidence)
         message.data.setdefault(INTENT_RANKING_KEY, [])
         message.data[INTENT_RANKING_KEY].insert(0, _fallback_intent(confidence))
+        message.output_properties.add(INTENT)
 
     def _should_fallback(self, message: Message) -> bool:
         """Check if the fallback intent should be predicted.

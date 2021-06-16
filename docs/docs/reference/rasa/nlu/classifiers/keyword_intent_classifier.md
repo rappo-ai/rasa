@@ -8,11 +8,17 @@ title: rasa.nlu.classifiers.keyword_intent_classifier
 class KeywordIntentClassifier(IntentClassifier)
 ```
 
-Intent classifier using simple keyword matching.
+Intent classifier looking for keyword matches in the training examples
+with the ability to customise the match condition, and override an existing
+classification if a keyword intent is misclassified by any prior NLU classifier.
 
+The classifier takes a list of keywords, match conditions and associated intents
+as an input. An input sentence is checked for the matching keyword and the intent
+is returned.
 
-The classifier takes a list of keywords and associated intents as an input.
-An input sentence is checked for the keywords and the intent is returned.
+If the input sentence is pre-classified with an intent marked with keyword_intent
+metadata flag, the prior intent classification by an nlu classifier will be
+cleared.
 
 #### persist
 

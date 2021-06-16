@@ -10,6 +10,7 @@ from telebot.types import (
     InlineKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardMarkup,
+    ReplyKeyboardRemove,
     Message,
 )
 from typing import Dict, Text, Any, List, Optional, Callable, Awaitable
@@ -36,12 +37,12 @@ class TelegramOutput(TeleBot, OutputChannel):
         self, recipient_id: Text, text: Text, **kwargs: Any
     ) -> None:
         for message_part in text.strip().split("\n\n"):
-            self.send_message(recipient_id, message_part)
+            self.send_message(recipient_id, message_part, reply_markup=ReplyKeyboardRemove())
 
     async def send_image_url(
         self, recipient_id: Text, image: Text, **kwargs: Any
     ) -> None:
-        self.send_photo(recipient_id, image)
+        self.send_photo(recipient_id, image, reply_markup=ReplyKeyboardRemove())
 
     async def send_text_with_buttons(
         self,
@@ -135,6 +136,8 @@ class TelegramOutput(TeleBot, OutputChannel):
         for params in send_functions.keys():
             if all(json_message.get(p) is not None for p in params):
                 args = [json_message.pop(p) for p in params]
+                if send_functions[params] not in ["send_media_group", "send_game", "send_chat_action", "send_invoice"]:
+                   json_message["reply_markup"] = ReplyKeyboardRemove()
                 api_call = getattr(self, send_functions[params])
                 api_call(recipient_id, *args, **json_message)
 
@@ -155,6 +158,7 @@ class TelegramInput(InputChannel):
             credentials.get("access_token"),
             credentials.get("verify"),
             credentials.get("webhook_url"),
+            credentials.get("drop_pending_updates", 'true').lower() in ['true', '1', 't'],
         )
 
     def __init__(
@@ -162,28 +166,30 @@ class TelegramInput(InputChannel):
         access_token: Optional[Text],
         verify: Optional[Text],
         webhook_url: Optional[Text],
+        drop_pending_updates: Optional[bool] = True,
         debug_mode: bool = True,
     ) -> None:
         self.access_token = access_token
         self.verify = verify
         self.webhook_url = webhook_url
+        self.drop_pending_updates = drop_pending_updates
         self.debug_mode = debug_mode
 
     @staticmethod
     def _is_location(message: Message) -> bool:
-        return message.location is not None
+        return message and (message.location is not None)
 
     @staticmethod
     def _is_user_message(message: Message) -> bool:
-        return message.text is not None
+        return message and (message.text is not None)
 
     @staticmethod
     def _is_edited_message(message: Update) -> bool:
-        return message.edited_message is not None
+        return message and (message.edited_message is not None)
 
     @staticmethod
     def _is_button(message: Update) -> bool:
-        return message.callback_query is not None
+        return message and (message.callback_query is not None)
 
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[Any]]
@@ -232,7 +238,7 @@ class TelegramInput(InputChannel):
                     else:
                         return response.text("success")
                 sender_id = msg.chat.id
-                metadata = self.get_metadata(request)
+                metadata = self.get_metadata(request) or {}
                 try:
                     if text == (INTENT_MESSAGE_PREFIX + USER_INTENT_RESTART):
                         await on_new_message(
@@ -254,6 +260,7 @@ class TelegramInput(InputChannel):
                             )
                         )
                     else:
+                        metadata["disable_intent_shortcut"] = True
                         await on_new_message(
                             UserMessage(
                                 text,
@@ -277,6 +284,9 @@ class TelegramInput(InputChannel):
     def get_output_channel(self) -> TelegramOutput:
         """Loads the telegram channel."""
         channel = TelegramOutput(self.access_token)
-        channel.set_webhook(url=self.webhook_url)
+        channel.set_webhook(url=self.webhook_url, drop_pending_updates=self.drop_pending_updates)
 
         return channel
+
+    def get_metadata(self, request: Request) -> Dict[Text, Any]:
+        return request.json
