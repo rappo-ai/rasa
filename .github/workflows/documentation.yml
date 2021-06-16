@@ -6,6 +6,7 @@ on:
     - 'main'
     tags:
     - '**'
+  workflow_dispatch:
 
 # SECRETS
 # - GH_DOCS_WRITE_KEY: generated locally, added to github repo (public key)
