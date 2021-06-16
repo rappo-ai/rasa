@@ -9,10 +9,10 @@ const isDev = process.env.NODE_ENV === 'development';
 const isStaging = process.env.NETLIFY && process.env.CONTEXT === 'staging';
 const isPreview = process.env.NETLIFY && process.env.CONTEXT === 'deploy-preview';
 
-const BASE_URL = '/docs/rasa/';
-const SITE_URL = 'https://rasa.com';
+const BASE_URL = '/';
+const SITE_URL = 'https://docs.telegram.rappo.ai';
 // NOTE: this allows switching between local dev instances of rasa/rasa-x
-const SWAP_URL = isDev ? 'http://localhost:3001' : SITE_URL;
+//const SWAP_URL = isDev ? 'http://localhost:3001' : SITE_URL;
 
 let existingVersions = [];
 try { existingVersions = require('./versions.json'); } catch (e) { console.info('no versions.json file found') }
@@ -88,7 +88,7 @@ module.exports = {
           target: '_self',
           label: 'Rasa X',
           position: 'left',
-          href: `${SWAP_URL}/docs/rasa-x/`,
+          href: 'https://rasa.com/docs/rasa-x/',
         },
         {
           target: '_self',
@@ -139,9 +139,9 @@ module.exports = {
     footer: {
       copyright: `Copyright © ${new Date().getFullYear()} Rasa Technologies GmbH`,
     },
-    gtm: {
-      containerID: 'GTM-MMHSZCS',
-    },
+    //gtm: {
+    //  containerID: 'GTM-MMHSZCS',
+    //},
   },
   themes: [
     '@docusaurus/theme-search-algolia',
@@ -185,6 +185,6 @@ module.exports = {
         priority: 0.5,
       }],
     isDev && ['@docusaurus/plugin-debug', {}],
-    [path.resolve(__dirname, './plugins/google-tagmanager'), {}],
+    //[path.resolve(__dirname, './plugins/google-tagmanager'), {}],
   ].filter(Boolean),
 };
