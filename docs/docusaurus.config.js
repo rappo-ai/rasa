@@ -65,7 +65,7 @@ module.exports = {
       textColor: '#fff', // Defaults to `#000`.
       // isCloseable: false, // Defaults to `true`.
     },
-    algolia: {
+    /*algolia: {
       // this is configured via DocSearch here:
       // https://github.com/algolia/docsearch-configs/blob/master/configs/rasa.json
       apiKey: '1f9e0efb89e98543f6613a60f847b176',
@@ -74,7 +74,7 @@ module.exports = {
       searchParameters: {
         'facetFilters': ["tags:rasa"]
       }
-    },
+    },*/
     navbar: {
       hideOnScroll: false,
       title: 'Rasa Open Source',
