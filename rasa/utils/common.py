@@ -333,3 +333,8 @@ def is_shortcut_intent(text: Text):
     return text.startswith(INTENT_MESSAGE_PREFIX) and not text.startswith(
         INTENT_MESSAGE_ESCAPE_PREFIX
     )
+
+def remove_shortcut_intent_escape_prefix(text: Text) -> Text:
+    if text.startswith(INTENT_MESSAGE_ESCAPE_PREFIX):
+        text = text.replace(INTENT_MESSAGE_ESCAPE_PREFIX, "", 1)
+    return text

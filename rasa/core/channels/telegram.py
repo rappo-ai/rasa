@@ -260,7 +260,6 @@ class TelegramInput(InputChannel):
                             )
                         )
                     else:
-                        metadata["disable_intent_shortcut"] = True
                         await on_new_message(
                             UserMessage(
                                 text,
@@ -268,6 +267,7 @@ class TelegramInput(InputChannel):
                                 sender_id,
                                 input_channel=self.name(),
                                 metadata=metadata,
+                                disable_intent_shortcut=True
                             )
                         )
                 except Exception as e:

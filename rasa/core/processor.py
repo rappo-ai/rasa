@@ -55,6 +55,7 @@ import rasa.core.tracker_store
 import rasa.shared.core.trackers
 from rasa.shared.core.trackers import DialogueStateTracker, EventVerbosity
 from rasa.shared.nlu.constants import INTENT_NAME_KEY
+from rasa.utils.common import is_shortcut_intent
 from rasa.utils.endpoints import EndpointConfig
 
 logger = logging.getLogger(__name__)
@@ -567,9 +568,7 @@ class MessageProcessor:
         # Channels which need to support user messages starting
         # with / can set disable_intent_shortcut to True to disable
         # intent short-cuts.
-        if text.startswith(INTENT_MESSAGE_PREFIX) and not message.metadata.get(
-            "disable_intent_shortcut", False
-        ):
+        if is_shortcut_intent(text) and not message.disable_intent_shortcut:
             parse_data = await RegexInterpreter().parse(
                 text, message.message_id, tracker
             )
