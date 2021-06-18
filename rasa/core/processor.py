@@ -55,6 +55,7 @@ import rasa.core.tracker_store
 import rasa.shared.core.trackers
 from rasa.shared.core.trackers import DialogueStateTracker, EventVerbosity
 from rasa.shared.nlu.constants import INTENT_NAME_KEY
+from rasa.utils.common import has_intent_prefix
 from rasa.utils.endpoints import EndpointConfig
 
 logger = logging.getLogger(__name__)
@@ -565,11 +566,9 @@ class MessageProcessor:
         # in the format /intent{"entity1": val1, "entity2": val2}
         # parse_data is a dict of intent & entities.
         # Channels which need to support user messages starting
-        # with / can set disable_intent_shortcut to True to disable
-        # intent short-cuts.
-        if text.startswith(INTENT_MESSAGE_PREFIX) and not message.metadata.get(
-            "disable_intent_shortcut", False
-        ):
+        # with / can set disable_nlu_bypass to True to disable
+        # NLU bypass.
+        if has_intent_prefix(text) and not message.disable_nlu_bypass:
             parse_data = await RegexInterpreter().parse(
                 text, message.message_id, tracker
             )

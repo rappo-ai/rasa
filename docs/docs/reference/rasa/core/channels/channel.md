@@ -15,7 +15,7 @@ Includes the channel the responses should be sent to.
 #### \_\_init\_\_
 
 ```python
- | __init__(text: Optional[Text] = None, output_channel: Optional["OutputChannel"] = None, sender_id: Optional[Text] = None, parse_data: Dict[Text, Any] = None, input_channel: Optional[Text] = None, message_id: Optional[Text] = None, metadata: Optional[Dict] = None) -> None
+ | __init__(text: Optional[Text] = None, output_channel: Optional["OutputChannel"] = None, sender_id: Optional[Text] = None, parse_data: Dict[Text, Any] = None, input_channel: Optional[Text] = None, message_id: Optional[Text] = None, metadata: Optional[Dict] = None, disable_nlu_bypass: Optional[bool] = False) -> None
 ```
 
 Creates a ``UserMessage`` object.
@@ -30,6 +30,7 @@ Creates a ``UserMessage`` object.
 - `input_channel` - the name of the channel which received this message.
 - `message_id` - ID of the message.
 - `metadata` - additional metadata for this message.
+- `disable_nlu_bypass` - toggle NLU bypass when text starts with &#x27;/&#x27;
 
 #### register
 

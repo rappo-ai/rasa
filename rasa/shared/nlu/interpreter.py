@@ -9,7 +9,7 @@ from rasa.shared.core.trackers import DialogueStateTracker
 from rasa.shared.constants import INTENT_MESSAGE_PREFIX, DOCS_URL_STORIES
 from rasa.shared.nlu.constants import INTENT_NAME_KEY
 from rasa.shared.nlu.training_data.message import Message
-from rasa.utils.common import is_shortcut_intent
+
 
 logger = logging.getLogger(__name__)
 
@@ -99,6 +99,12 @@ class RegexInterpreter(NaturalLanguageInterpreter):
             )
             return 0.0
 
+    def _starts_with_intent_prefix(self, text: Text) -> bool:
+        for c in self.allowed_prefixes():
+            if text.startswith(c):
+                return True
+        return False
+
     @staticmethod
     def extract_intent_and_entities(
         user_input: Text,
@@ -136,7 +142,7 @@ class RegexInterpreter(NaturalLanguageInterpreter):
 
         intent, confidence, entities = self.extract_intent_and_entities(text)
 
-        if is_shortcut_intent(text):
+        if self._starts_with_intent_prefix(text):
             message_text = text
         else:
             message_text = INTENT_MESSAGE_PREFIX + text

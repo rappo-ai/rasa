@@ -65,7 +65,7 @@ module.exports = {
       textColor: '#fff', // Defaults to `#000`.
       // isCloseable: false, // Defaults to `true`.
     },
-    algolia: {
+    /*algolia: {
       // this is configured via DocSearch here:
       // https://github.com/algolia/docsearch-configs/blob/master/configs/rasa.json
       apiKey: '1f9e0efb89e98543f6613a60f847b176',
@@ -74,7 +74,7 @@ module.exports = {
       searchParameters: {
         'facetFilters': ["tags:rasa"]
       }
-    },
+    },*/
     navbar: {
       hideOnScroll: false,
       title: 'Rasa Open Source',
@@ -85,13 +85,13 @@ module.exports = {
           position: 'left',
         },
         {
-          target: '_self',
+          target: '_blank',
           label: 'Rasa X',
           position: 'left',
           href: 'https://rasa.com/docs/rasa-x/',
         },
         {
-          target: '_self',
+          target: '_blank',
           label: 'Rasa Action Server',
           position: 'left',
           href: 'https://rasa.com/docs/action-server',
@@ -103,7 +103,7 @@ module.exports = {
           position: 'right',
         },
         {
-          target: '_self',
+          target: '_blank',
           href: 'https://blog.rasa.com/',
           label: 'Blog',
           position: 'right',
@@ -113,22 +113,22 @@ module.exports = {
           position: 'right',
           items: [
             {
-              target: '_self',
+              target: '_blank',
               href: 'https://rasa.com/community/join/',
               label: 'Community Hub',
             },
             {
-              target: '_self',
+              target: '_blank',
               href: 'https://forum.rasa.com',
               label: 'Forum',
             },
             {
-              target: '_self',
+              target: '_blank',
               href: 'https://rasa.com/community/contribute/',
               label: 'How to Contribute',
             },
             {
-              target: '_self',
+              target: '_blank',
               href: 'https://rasa.com/showcase/',
               label: 'Community Showcase',
             },

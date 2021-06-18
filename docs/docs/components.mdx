@@ -1296,7 +1296,7 @@ Intent classifiers assign one of the intents defined in the domain file to incom
 
 * **Short**
 
-  Simple keyword matching intent classifier, intended for small, short-term projects.
+  Simple keyword matching intent classifier.
 
 
 
@@ -1325,15 +1325,23 @@ Intent classifiers assign one of the intents defined in the domain file to incom
 * **Description**
 
   This classifier works by searching a message for keywords.
-  The matching is case sensitive by default and searches only for exact matches of the keyword-string in the user
-  message.
+  
+  The matching is case sensitive by default and searches for matches of the keyword-string in the user
+  message depending on `match_condition`. Supported match conditions are "contain" (default), "exact",
+  "start" and "end". Match condition can be set in the `config.yml` file, intent metadata or example
+  metadata.
+
+  If the intent metadata `keyword_intent` is set to `true`, this classifier will reset any prior classification
+  done by other classifiers. This is useful if you want to force the classification of the intent to be done
+  by the keyword intent classifier.
+
   The keywords for an intent are the examples of that intent in the NLU training data.
   This means the entire example is the keyword, not the individual words in the example.
 
   :::note
-  This classifier is intended only for small projects or to get started. If
-  you have few NLU training data, you can take a look at the recommended pipelines in
-  [Tuning Your Model](./tuning-your-model.mdx).
+  This classifier is intended only for small projects or for certain channels which need to support
+  slash commands (such as [Telegram](/connectors/telegram)). If you have few NLU training data, you
+  can take a look at the recommended pipelines in [Tuning Your Model](./tuning-your-model.mdx).
 
   :::
 
@@ -1345,6 +1353,18 @@ Intent classifiers assign one of the intents defined in the domain file to incom
   pipeline:
   - name: "KeywordIntentClassifier"
     case_sensitive: True
+  ```
+
+* **NLU**
+
+  ```yaml-rasa
+  nlu:
+  - intent: keyword_intent
+    metadata:
+      match_condition: "exact"
+      keyword_intent: true
+    examples: |
+    - match_phrase
   ```
 
 

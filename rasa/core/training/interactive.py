@@ -69,7 +69,7 @@ from rasa.shared.core.training_data.visualization import (
 )
 from rasa.core.utils import AvailableEndpoints
 from rasa.shared.importers.rasa import TrainingDataImporter
-from rasa.utils.common import is_shortcut_intent, update_sanic_log_level
+from rasa.utils.common import has_intent_prefix, update_sanic_log_level
 from rasa.utils.endpoints import EndpointConfig
 
 # noinspection PyProtectedMember
@@ -848,7 +848,7 @@ def _filter_messages(msgs: List[Message]) -> List[Message]:
     """Filter messages removing those that are intent short-cuts"""
     filtered_messages = []
     for msg in msgs:
-        if not is_shortcut_intent(msg.get(TEXT)):
+        if not has_intent_prefix(msg.get(TEXT)):
             filtered_messages.append(msg)
     return filtered_messages
 
@@ -1172,7 +1172,7 @@ def _as_md_message(parse_data: Dict[Text, Any]) -> Text:
     """Display the parse data of a message in markdown format."""
     from rasa.shared.nlu.training_data.formats.readerwriter import TrainingDataWriter
 
-    if is_shortcut_intent(parse_data.get("text", "")):
+    if has_intent_prefix(parse_data.get("text", "")):
         return parse_data["text"]
 
     if not parse_data.get("entities"):
@@ -1241,7 +1241,7 @@ async def _validate_nlu(
 
     latest_message = latest_user_message(tracker.get("events", [])) or {}
 
-    if is_shortcut_intent(latest_message.get("text", "")):
+    if has_intent_prefix(latest_message.get("text", "")):
         valid = _validate_user_regex(latest_message, intents)
     else:
         valid = await _validate_user_text(latest_message, endpoint, conversation_id)

@@ -39,6 +39,12 @@ and may skip re-training your dialogue model.
 
 :::
 
+:::note
+Any action that can be triggered with a forward slash uses [NLU Bypass](/nlu-training-data/#nlu-bypass).
+For the trigger to work, NLU bypass must be enabled in the corresponding channel connector.
+
+:::
+
 ## action_listen
 This action is predicted to signal that the assistant should do nothing and wait
 for the next user input.
@@ -50,6 +56,9 @@ set during it.
 It can be triggered by the user in a conversation by sending a
 "/restart" message, if the [RulePolicy](./rules.mdx) is included in the model configuration.
 If you define an `utter_restart` response in your domain, this will be sent to the user as well.
+
+This action automatically triggers `action_session_start` as a follow-up action, and sets the
+`session_started_metadata` slot with the value of the metadata of the "/restart" user message.
 
 ## action_session_start
 
