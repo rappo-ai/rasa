@@ -25,6 +25,12 @@ You need to set up a Telegram bot.
    turn on group privacy mode by entering `/setprivacy`. Then the bot
    will only listen when a user's message starts with `/bot`.
 
+4. By default the bot will drop any pending webhook updates from Telegram when launched. 
+   This scenario can arise when your Telegram bot receives messages but your Rasa bot is
+   not yet up or its execution has paused or crashed. If you wish to process pending updates on
+   the next launch please change the key `drop_pending_updates` in the credentials file
+   under `telegram` to the value `false`.
+
 For more information, check out the [Telegram HTTP API](https://core.telegram.org/bots/api).
 
 ## Running on Telegram
@@ -42,6 +48,29 @@ telegram:
 Restart your Rasa X or Rasa Open Source server
 to make the new channel endpoint available for Telegram to send messages to.
 
+## Classifying Telegram Commands
+
+Telegram commands start with a forward slash `/` followed by the command name and optional arguments.
+These commands need to be triggered only when the command syntax is precisely followed. In other words,
+we need to disable NLU generalisation for intents that represent these commands. You can do this by
+using the [KeywordIntentClassifier](/components/#keywordintentclassifier) and adding an intent with metadata `keyword_intent`
+set to `true`. Additionally you need to set the metadata `match_condition` to `start` or `exact`
+to either match the start of the user's utterance or the exact utterance.
+
+```yaml-rasa
+nlu:
+  - intent: my_command
+  metadata:
+    keyword_intent: true
+    match_condition: "exact"
+  examples: |
+    - /my_command
+```
+
+Rasa by default treats any user utterance starting with a forward slash as a directive to bypass the NLU,
+and directly matches the text following the slash as the intent name. To allow processing of Telegram
+commands, NLU bypass is disabled in the Telegram connector. See [NLU Bypass](/nlu-training-data/#nlu-bypass)
+to know more.
 
 ## Supported Response Attachments
 
@@ -64,6 +93,11 @@ In addition to standard `text:` responses, this channel also supports the follow
   - phone_number
   - game_short_name
   - action
+
+:::note
+The custom keyboard set by using button type `reply` is cleared on the next incoming user message.
+
+:::
 
 Examples:
 

@@ -317,3 +317,24 @@ When the option `BILOU_flag` is set to `True`, the model may predict inconsisten
 `B-person I-location L-person`. Rasa Open Source uses some heuristics to clean up the inconsistent BILOU tags.
 For example, `B-person I-location L-person` would be changed into `B-person I-person L-person`.
 :::
+
+## NLU Bypass
+
+Messages starting with `/` are sent straight to the `RegexInterpreter`, which expects NLU input in
+a shortened `/intent{entities}` format.
+
+You can include entities with the intent to be passed to the `RegexInterpreter` using the following format:
+
+`/inform{"ORG":"Rasa", "GPE":"Germany"}`
+
+The `RegexInterpreter` will classify the message above with the intent `inform` and extract the entities
+`Rasa` and `Germany` which are of type `ORG` and `GPE` respectively.
+
+NLU bypass can interfere with certain channels where it is common to receive slash commands, such as Telegram.
+It can be disabled in a channel connector by setting the [UserMessage](/reference/rasa/core/channels/channel#usermessage-objects)
+attribute `disable_nlu_bypass` to `True`. See the documentation for individual channel connectors to know more about their NLU bypass behavior.
+
+When NLU bypass is enabled, to send a message with a forward slash to the NLU interpreter instead of regex interpreter
+just add an extra forward slash at the start. For example:
+
+`//send_to_nlu_interpreter` 
