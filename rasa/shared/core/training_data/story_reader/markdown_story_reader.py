@@ -30,7 +30,7 @@ from rasa.shared.core.training_data.story_reader.story_reader import (
 )
 from rasa.shared.core.training_data.structures import StoryStep, FORM_PREFIX
 import rasa.shared.utils.io
-from rasa.utils.common import is_shortcut_intent
+from rasa.utils.common import has_intent_prefix
 
 logger = logging.getLogger(__name__)
 
@@ -271,7 +271,7 @@ class MarkdownStoryReader(StoryReader):
 
         # If the message is a short-cut intent, potential entities
         # are annotated in the json format (e.g. `/greet{"name": "Rasa"})
-        if is_shortcut_intent(message):
+        if has_intent_prefix(message):
             parsed = RegexInterpreter().synchronous_parse(message)
             example.data["entities"] = parsed["entities"]
 

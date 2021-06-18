@@ -267,7 +267,7 @@ class TelegramInput(InputChannel):
                                 sender_id,
                                 input_channel=self.name(),
                                 metadata=metadata,
-                                disable_intent_shortcut=True
+                                disable_nlu_bypass=True
                             )
                         )
                 except Exception as e:

@@ -20,7 +20,7 @@ from rasa.cli import utils as cli_utils
 from rasa.shared.constants import DOCS_BASE_URL, DEFAULT_SENDER_ID
 from rasa.core.constants import BEARER_TOKEN_PREFIX
 from rasa.shared.exceptions import RasaException
-from rasa.utils.common import remove_shortcut_intent_escape_prefix
+from rasa.utils.common import remove_intent_escape_prefix
 
 try:
     from urlparse import urljoin
@@ -44,7 +44,7 @@ class UserMessage:
         input_channel: Optional[Text] = None,
         message_id: Optional[Text] = None,
         metadata: Optional[Dict] = None,
-        disable_intent_shortcut: Optional[bool] = False,
+        disable_nlu_bypass: Optional[bool] = False,
     ) -> None:
         """Creates a ``UserMessage`` object.
 
@@ -57,7 +57,7 @@ class UserMessage:
             input_channel: the name of the channel which received this message.
             message_id: ID of the message.
             metadata: additional metadata for this message.
-
+            disable_nlu_bypass: toggle NLU bypass when text starts with '/'
         """
         self.text = text.strip() if text else text
 
@@ -80,7 +80,7 @@ class UserMessage:
 
         self.parse_data = parse_data
         self.metadata = metadata
-        self.disable_intent_shortcut = disable_intent_shortcut
+        self.disable_nlu_bypass = disable_nlu_bypass
 
 
 def register(
@@ -90,8 +90,8 @@ def register(
 
     async def handler(message: UserMessage) -> None:
         preprocessor = None
-        if not message.disable_intent_shortcut:
-            preprocessor = lambda t: remove_shortcut_intent_escape_prefix(t)
+        if not message.disable_nlu_bypass:
+            preprocessor = lambda t: remove_intent_escape_prefix(t)
         await app.agent.handle_message(message, preprocessor)
 
     for channel in input_channels:

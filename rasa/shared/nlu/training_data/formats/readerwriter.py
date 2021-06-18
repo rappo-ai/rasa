@@ -17,7 +17,7 @@ from rasa.shared.nlu.constants import (
 )
 
 import rasa.shared.utils.io
-from rasa.utils.common import is_shortcut_intent
+from rasa.utils.common import has_intent_prefix
 
 import typing
 from typing import Text, Dict, Any, Union
@@ -90,7 +90,7 @@ class TrainingDataWriter:
         # If a message is a shortcut intent then potential entities were
         # provided in the json format (e.g. `/greet{"name": "Rasa"}) and
         # we don't have to add the NLU entity annotation
-        if not is_shortcut_intent(text):
+        if not has_intent_prefix(text):
 
             entities = message.get("entities", [])
             entities_with_start_and_end = [
