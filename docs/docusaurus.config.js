@@ -10,7 +10,7 @@ const isStaging = process.env.NETLIFY && process.env.CONTEXT === 'staging';
 const isPreview = process.env.NETLIFY && process.env.CONTEXT === 'deploy-preview';
 
 const BASE_URL = '/';
-const SITE_URL = 'https://docs.telegram.rappo.ai';
+const SITE_URL = 'https://docs.rasa.rappo.ai';
 // NOTE: this allows switching between local dev instances of rasa/rasa-x
 //const SWAP_URL = isDev ? 'http://localhost:3001' : SITE_URL;
 
